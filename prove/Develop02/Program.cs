@@ -10,10 +10,8 @@ class Program
         Prompts prompt = new Prompts();
         Journal journal = new Journal();
 
-        // Main loop for the menu
         while (running)
         {
-            // Display the menu options
             Console.WriteLine("Menu:");
             Console.WriteLine("1. Write");
             Console.WriteLine("2. Display all entries");
@@ -21,10 +19,8 @@ class Program
             Console.WriteLine("4. Load");
             Console.WriteLine("5. Quit");
 
-            // Get user choice
             string choice = Console.ReadLine();
 
-            // Define the menu actions
             var menuActions = new Dictionary<string, Action>
             {
                 { "1", () =>
@@ -33,6 +29,10 @@ class Program
                         Console.WriteLine($"Prompt: {randomPrompt}");
                         Console.Write("Response: ");
                         string response = Console.ReadLine();
+
+                        Console.Write("How are you feeling today? ");
+                        string mood = Console.ReadLine();
+
                         Entry entry = new Entry(randomPrompt, response) { _date = DateTime.Now };
                         journal.AddEntry(entry);
                         Console.WriteLine("Added!");
@@ -68,7 +68,6 @@ class Program
                 }
             };
 
-            // Execute the chosen action
             if (menuActions.ContainsKey(choice))
             {
                 menuActions[choice].Invoke();
