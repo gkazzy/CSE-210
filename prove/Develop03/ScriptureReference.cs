@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-
-public class ScriptureReference
+public class ScriptureReference 
 {
     private string _book;
     private int _chapter;
@@ -14,30 +11,27 @@ public class ScriptureReference
     public int StartVerse { get; private set; }
     public int? EndVerse { get; private set; }
 
+    // Constructor for one verse
     public ScriptureReference(string book, int chapter, int startVerse)
     {
         _book = book;
         _chapter = chapter;
         _startVerse = startVerse;
-        EndVerse = null; // Single verse
+        _endVerse = null; 
     }
-
     public ScriptureReference(string book, int chapter, int startVerse, int endVerse)
     {
         _book = book;
         _chapter = chapter;
         _startVerse = startVerse;
-        _endVerse = endVerse; // Range of verses
+        _endVerse = endVerse;
     }
-
-    public override string ToString() {
-    if (EndVerse.HasValue)
+    public override string ToString()
     {
-        return _book + " " + _chapter + ":" + _startVerse + "-" + EndVerse;
-    }
-    else
-    {
-        return _book + " " + _chapter + ":" + _startVerse;
-    }
+        if (_endVerse == null)
+        {
+            return $"{_book} {_chapter}:{_startVerse}"; 
+        }
+        return $"{_book} {_chapter}:{_startVerse}-{_endVerse}"; 
     }
 }

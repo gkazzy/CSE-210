@@ -1,34 +1,45 @@
-class Program
-{
-    static void Main()
-    {
-        ScriptureReference reference = new ScriptureReference("Moroni", 10, 4, 5);
-        string scriptureText = "And when ye shall receive these things, I would exhort you that ye would ask God, the Eternal Father, in the name of Christ, if these things are not true; and if ye shall ask with a sincere heart, with real intent, having faith in Christ, he will manifest the truth of it unto you, by the power of the Holy Ghost. And by the power of the Holy Ghost ye may know the truth of all things.";
+using System;
+using System.Collections.Generic;
 
-        Scripture scripture = new Scripture(reference, scriptureText);
+public class Program
+{
+    static void Main(string[] args)
+    {
+        var verses = new List<(ScriptureReference Reference, string Text)>
+        {
+            (new ScriptureReference("Jacob", 2, 18, 19), "But before ye seek for riches, seek ye for the kingdom of God. And after ye have obtained a hope in Christ ye shall obtain riches, if ye seek them; and ye will seek them for the intent to do good—to clothe the naked, and to feed the hungry, and to liberate the captive, and administer relief to the sick and the afflicted."),
+            (new ScriptureReference("2 Nephi", 32, 3), "Angels speak by the power of the Holy Ghost; wherefore, they speak the words of Christ. Wherefore, I said unto you, feast upon the words of Christ; for behold, the words of Christ will tell you all things what ye should do."),
+            (new ScriptureReference("Alma", 36, 3), "And now, O my son Helaman, behold, thou art in thy youth, and therefore, I beseech of thee that thou wilt hear my words and learn of me; for I do know that whosoever shall put their trust in God shall be supported in their trials, and their troubles, and their afflictions, and shall be lifted up at the last day.")
+        };
+
+        Random random = new Random();
+        int randomIndex = random.Next(verses.Count);
+        var selectedVerse = verses[randomIndex];
+
+        Scripture scripture = new Scripture(selectedVerse.Reference, selectedVerse.Text);
         Console.Clear();
-        scripture.DisplayScripture();
+        Console.WriteLine(scripture.DisplayScripture());
 
         while (true)
         {
-            Console.WriteLine("\n Press Enter to continue or type 'quit' to exit.");
-            string input = Console.ReadLine();
+            Console.WriteLine("Press Enter to hide words or type 'quit' to quit.");
+            var input = Console.ReadLine();
 
-            if (input.Trim().ToLower() == "quit")
-                break;
-
-            Console.Clear();
-            if (scripture.HiddenWordCount < scripture.TotalWords)
+            if (input == "quit")
             {
-                scripture.HideRandomWords(3); 
-                scripture.DisplayScripture();
+                break; 
             }
-            else
+
+            scripture.HideRandomWords();
+            Console.Clear(); 
+            Console.WriteLine(scripture.DisplayScripture()); 
+
+            if (scripture.IsCompletelyHidden())
             {
-                Console.Clear();
                 Console.WriteLine("All words are hidden!");
-                break;
+                break; 
             }
         }
+
     }
 }
