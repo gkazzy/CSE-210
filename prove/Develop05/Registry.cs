@@ -2,24 +2,24 @@ using System.Security.Cryptography.X509Certificates;
 
 public class Registry
 {
-    private List<Goal> goals = new List<Goal>();
+    private List<Goal> _goals = new List<Goal>();
     private int _score;
 
     public void AddGoal(Goal goal)
     {
-        goals.Add(goal);
+        _goals.Add(goal);
         Console.WriteLine($"Added goal: {goal.Name}");
     }
 
     public void DisplayGoals()
 {
-    if (goals.Count == 0)
+    if (_goals.Count == 0)
     {
         Console.WriteLine("No goals have been added yet.");
         return;
     }
     int index = 1;
-    foreach (Goal goal in goals)
+    foreach (Goal goal in _goals)
     {
         string status = goal.IsComplete ? "[X]" : "[ ]";
         if (goal is ChecklistGoal checklistGoal)
@@ -45,7 +45,7 @@ public class Registry
 
     public void RecordEvent()
     {
-        if (goals.Count == 0)
+        if (_goals.Count == 0)
         {
             Console.WriteLine("There are no goals to display.");
             return;
@@ -55,12 +55,12 @@ public class Registry
 
         Console.WriteLine("Goal Number: ");
         int _recordchoice;
-            while (!int.TryParse(Console.ReadLine(), out _recordchoice) || _recordchoice <= 0 || _recordchoice > goals.Count)
+            while (!int.TryParse(Console.ReadLine(), out _recordchoice) || _recordchoice <= 0 || _recordchoice > _goals.Count)
             {
                 Console.WriteLine("Invalid input. Please select a valid goal number:");
             }
 
-        goals[_recordchoice - 1].RecordProgress();
+        _goals[_recordchoice - 1].RecordProgress();
         SetScore();
         Console.WriteLine($"SCORE: {GetScore()}");
     }
@@ -72,7 +72,7 @@ public class Registry
     public void SetScore()
     {
         _score = 0; 
-        foreach (Goal goal in goals)
+        foreach (Goal goal in _goals)
         {
             goal.CalculateScore(ref _score); 
         }
@@ -85,7 +85,7 @@ public void SaveGoals()
 
     using (StreamWriter writer = new StreamWriter(saveFileName))
     {
-        foreach (Goal goal in goals)
+        foreach (Goal goal in _goals)
         {
             if (goal is ChallengeGoal challengeGoal)
             {
@@ -107,7 +107,7 @@ public void SaveGoals()
 
     if (File.Exists(loadFileName))
     {
-        goals.Clear();  // Clear existing goals
+        _goals.Clear();  // Clear existing goals
         foreach (string line in File.ReadLines(loadFileName))
         {
             string[] parts = line.Split(':');
@@ -154,7 +154,7 @@ public void SaveGoals()
             }
             if (goal != null)
             {
-                goals.Add(goal);
+                _goals.Add(goal);
             }
         }
         Console.WriteLine("Goals loaded successfully!");
