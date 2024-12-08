@@ -1,0 +1,4 @@
+AdultUser:gkaz,18,96,65,female,1
+AdultUser:jkaz,19,170,70,Male,2
+AthleteUser:billyjohn,22,190,72,male,2
+AthleteUser:tombrady,40,190,70,Male,2
